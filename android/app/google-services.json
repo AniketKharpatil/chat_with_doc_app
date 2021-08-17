@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "220147554524",
+    "project_id": "chat-app-with-doc-71bc9",
+    "storage_bucket": "chat-app-with-doc-71bc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220147554524:android:b898b4bbd8dd4f51787c19",
+        "android_client_info": {
+          "package_name": "com.purvajakale.doc_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220147554524-ngd86bftkrlt9ojstlsb0cscpka0shli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiPZ7eWR08ZRVPbn_xFupBp1bmXbWHy60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220147554524-ngd86bftkrlt9ojstlsb0cscpka0shli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
