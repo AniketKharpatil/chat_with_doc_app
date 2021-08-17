@@ -127,7 +127,7 @@ class ChatRoom extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.send_sharp),
                       onPressed: onSendMessage,
-                      iconSize: 32,
+                      iconSize: 33,
                     ),
                   ],
                 ),
