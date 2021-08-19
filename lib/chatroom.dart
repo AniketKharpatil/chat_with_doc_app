@@ -33,12 +33,9 @@ class ChatRoom extends StatelessWidget {
       print("Enter Some Text");
     }
   }
-
-  var locale = 'en';
-  _ago(Timestamp t) {
-    // if(t!=null)
-    return timeago.format(t.toDate(), locale: 'en_short');
-    // else return null;
+// var locale = 'en';
+  _ago(Timestamp now) {
+  return timeago.format(now?.toDate()==null?DateTime.now():now?.toDate(),locale: 'en_short');
   }
 
   @override
@@ -127,7 +124,7 @@ class ChatRoom extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.send_sharp),
                       onPressed: onSendMessage,
-                      iconSize: 36,
+                      iconSize: 34,
                     ),
                   ],
                 ),
@@ -158,8 +155,8 @@ class ChatRoom extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              _ago(map['time']),
+            Text(_ago(map['time']),
+              // map['time']?.toDate().toString(),
               // textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: 8,

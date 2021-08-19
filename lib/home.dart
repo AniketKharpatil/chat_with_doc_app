@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'onboarding screen/onboard_main.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -13,7 +14,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User user;
   bool isloggedin = false;
@@ -36,6 +37,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       ),
     );
     return await _auth.signOut();
+  }
+
+  Future adharOtp() async {
+    var url = Uri.parse('https://auth.uidai.gov.in');
+    var response = await http.post(url, body: {});
+    print(response.body);
+    print(response.statusCode);
   }
 
   checkAuthentication() async {
@@ -63,10 +71,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     }
   }
 
-
-
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-
 
   Map<String, dynamic> userMap;
   bool isLoading = false;
@@ -107,6 +112,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       return "$user2$user1";
     }
   }
+
+  // void listofchats()async{
 
   void onSearch() async {
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -177,12 +184,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                new AlertDialog(
+                                    new AlertDialog(
                                   title: Text('${user.displayName}'),
                                   content: new Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text('${user.email}'),
                                     ],
@@ -212,7 +219,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                   ),
                 ),
               ),
-
               TextButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
@@ -234,7 +240,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
         ),
       ),
       backgroundColor: Color(0xfff8f8f8),
-      body:isLoading
+      body: isLoading
           ? Center(
               child: Container(
                 height: size.height / 20,
@@ -242,70 +248,166 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                 child: CircularProgressIndicator(),
               ),
             )
-          : Column(
-              children: [
-                SizedBox(
-                  height: size.height / 20,
-                ),
-                Container(
-                  height: size.height / 14,
-                  width: size.width,
-                  alignment: Alignment.center,
-                  child: Container(
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: size.height / 20,
+                  ),
+                  Container(
                     height: size.height / 14,
-                    width: size.width / 1.15,
-                    child: TextField(
-                      controller: _search,
-                      decoration: InputDecoration(
-                        hintText: "Search",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    width: size.width,
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: size.height / 14,
+                      width: size.width / 1.15,
+                      child: TextField(
+                        controller: _search,
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: size.height / 50,
-                ),
-                ElevatedButton(
-                  onPressed: onSearch,
-                  child: Text("Search"),
-                ),
-                SizedBox(
-                  height: size.height / 30,
-                ),
-                userMap != null
-                    ? ListTile(
-                        onTap: () {
-                          String roomId = chatRoomId(
-                              _auth.currentUser.displayName, userMap['name']);
+                  SizedBox(
+                    height: size.height / 50,
+                  ),
+                  ElevatedButton(
+                    onPressed: onSearch,
+                    child: Text("Search"),
+                  ),
+                  SizedBox(
+                    height: size.height / 30,
+                  ),
+                  userMap != null
+                      ? ListTile(
+                          onTap: () {
+                            String roomId = chatRoomId(
+                                _auth.currentUser.displayName, userMap['name']);
 
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => ChatRoom(
-                                chatRoomId: roomId,
-                                userMap: userMap,
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ChatRoom(
+                                  chatRoomId: roomId,
+                                  userMap: userMap,
+                                ),
+                              ),
+                            );
+                          },
+                          leading: Icon(Icons.account_box, color: Colors.black),
+                          title: Text(
+                            userMap['name'],
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          subtitle: Text(userMap['email']),
+                          trailing: Icon(Icons.chat, color: Colors.black),
+                        )
+                      : Container(),
+                  Userdata(),
+                ],
+              ),
+            ),
+    );
+  }
+}
+
+class Userdata extends StatefulWidget {
+  const Userdata({Key key}) : super(key: key);
+  @override
+  _UserdataState createState() => _UserdataState();
+}
+
+class _UserdataState extends State<Userdata> {
+  @override
+  Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
+    Map<String, dynamic> userMap;
+
+    String chatRoomId(String user1, String user2) {
+      if (user1[0].toLowerCase().codeUnits[0] >
+          user2.toLowerCase().codeUnits[0]) {
+        return "$user1$user2";
+      } else {
+        return "$user2$user1";
+      }
+    }
+    void getdata(index)async{
+      
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+       await _firestore
+        .collection('users')
+        .get()
+        .then((value) {
+      setState(() {
+        userMap = value.docs[index].data();
+      });
+      print(userMap);
+    });
+    }
+
+    return Container(
+      child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('users').snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData)
+              return Center(child: CircularProgressIndicator());
+            else {
+              return Container(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index) {
+                        // return Container(
+                        //     child: Card(
+                        //       child: Column(
+                        //         children: [
+                        //           Text(
+                        //               snapshot.data.docs[index]['name']),
+                        //               Text(
+                        //               snapshot.data.docs[index]['email']),
+                        //         ],
+                        //       ),
+                        //     ));
+                        return Container(
+                          child: ListTile(
+                            onTap: () {getdata(index);
+                              String roomId = chatRoomId(
+                                  _auth.currentUser.displayName,
+                                  snapshot.data.docs[index]['name']);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ChatRoom(
+                                    chatRoomId: roomId,
+                                    userMap: userMap,
+                                  ),
+                                ),
+                              );
+                            },
+                            leading:
+                                Icon(Icons.account_box, color: Colors.black),
+                            title: Text(
+                              snapshot.data.docs[index]['name'],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                          );
-                        },
-                        leading: Icon(Icons.account_box, color: Colors.black),
-                        title: Text(
-                          userMap['name'],
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
+                            subtitle: Text(snapshot.data.docs[index]['email']),
+                            trailing: Icon(Icons.chat, color: Colors.black),
                           ),
-                        ),
-                        subtitle: Text(userMap['email']),
-                        trailing: Icon(Icons.chat, color: Colors.black),
-                      )
-                    : Container(),
-              ],
-            ),
-     
+                        );
+                      }));
+            }
+          }),
     );
   }
 }
