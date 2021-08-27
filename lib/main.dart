@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
         "Login": (BuildContext context) => Login(),
         "SignUp": (BuildContext context) => SignUp(),
         "start": (BuildContext context) => Onboarding(),
-        "home": (BuildContext context) => HomePage(),
+        "home": (BuildContext context) => HomePage2(),
       },
     );
   }

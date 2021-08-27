@@ -54,7 +54,7 @@ class _SignUpState extends State<SignUp> {
         });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => HomePage2()),
         );
         if (user != null) {
           await _auth.currentUser.updateDisplayName(_name);

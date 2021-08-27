@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   timeago: ^3.1.0
+  kommunicate_flutter: ^1.2.1
+  curved_navigation_bar: ^1.0.1
   firebase_core: ^1.4.0
   cloud_firestore: ^2.3.0
   firebase_auth: ^1.4.1

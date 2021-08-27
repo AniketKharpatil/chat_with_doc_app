@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doc_app/Components/BottomNavBar.dart';
 import 'package:doc_app/account_pages/resetpass.dart';
 import 'package:doc_app/account_pages/signup1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +26,12 @@ class _LoginState extends State<Login> {
     _auth.authStateChanges().listen((user) {
         print(user);
         _auth.currentUser.updateDisplayName(_name);
-        Navigator.pushReplacementNamed(context, "home");
+        // Navigator.pushReplacementNamed(context, "home");
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BottomNavBar()),
+          );
+
     });
 
   }
@@ -47,7 +53,7 @@ class _LoginState extends State<Login> {
           .then((value) => user.updateDisplayName(value['name']));
  Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => BottomNavBar()),
           );
       return user;
     } else {

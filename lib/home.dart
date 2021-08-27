@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doc_app/chatbot.dart';
 import 'package:doc_app/chatroom.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -7,14 +8,14 @@ import 'dart:ui';
 import 'onboarding screen/onboard_main.dart';
 import 'package:http/http.dart' as http;
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomePage2 extends StatefulWidget {
+  const HomePage2({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePage2State createState() => _HomePage2State();
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User user;
   bool isloggedin = false;
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       builder: (ctx) => AlertDialog(
         title: Text('Logout'),
         content: Text(
-            'You have been successfully logged out, now you will be redirected to HomePage'),
+            'You have been successfully logged out, now you will be redirected to HomePage2'),
         actions: <Widget>[
           FlatButton(
             onPressed: () {
@@ -235,6 +236,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   ),
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatBotPage()),
+                  );
+                },
+                child: ListTile(
+                  title: Text(
+                    "Chatbot",
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  trailing: Icon(
+                    Icons.logout,
+                    size: 28,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -339,18 +358,15 @@ class _UserdataState extends State<Userdata> {
         return "$user2$user1";
       }
     }
-    void getdata(index)async{
-      
-    FirebaseFirestore _firestore = FirebaseFirestore.instance;
-       await _firestore
-        .collection('users')
-        .get()
-        .then((value) {
-      setState(() {
-        userMap = value.docs[index].data();
+
+    void getdata(index) async {
+      FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      await _firestore.collection('users').get().then((value) {
+        setState(() {
+          userMap = value.docs[index].data();
+        });
+        print(userMap);
       });
-      print(userMap);
-    });
     }
 
     return Container(
@@ -378,7 +394,8 @@ class _UserdataState extends State<Userdata> {
                         //     ));
                         return Container(
                           child: ListTile(
-                            onTap: () {getdata(index);
+                            onTap: () {
+                              getdata(index);
                               String roomId = chatRoomId(
                                   _auth.currentUser.displayName,
                                   snapshot.data.docs[index]['name']);
