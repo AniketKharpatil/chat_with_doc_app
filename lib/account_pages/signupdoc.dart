@@ -6,33 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:doc_app/services/animation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../BottomNavBar.dart';
-
-class SignUp extends StatefulWidget {
+class SignUpDoc extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _SignUpDocState createState() => _SignUpDocState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpDocState extends State<SignUpDoc> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   String id;
   final db = FirebaseFirestore.instance;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _name, _email, _password, _role = 'user';
+  String _name, _email, _password, _role = 'doctor';
 
   checkAuth() async {
     _auth.authStateChanges().listen((user) {
       if (user != null) {
         print(user);
         _auth.currentUser.updateDisplayName(_name);
-         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BottomNavBar()),
-        );
-
-
+        Navigator.pushReplacementNamed(context, "/");
       }
     });
   }
@@ -43,7 +36,7 @@ class _SignUpState extends State<SignUp> {
     this.checkAuth();
   }
 
-  signUp() async {
+  SignUpDoc() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       //createData();
@@ -52,7 +45,7 @@ class _SignUpState extends State<SignUp> {
         UserCredential user = await _auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
         User user1 = FirebaseAuth.instance.currentUser;
-        await db.collection('users').doc(user1.uid).set({
+        await db.collection('doctors').doc(user1.uid).set({
           'email': _email,
           'uid': user1.uid,
           'role': _role,
@@ -94,14 +87,14 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final signupButton = Material(
+    final SignUpDocButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff7266d8),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.55,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: signUp,
+        onPressed: SignUpDoc,
         child: Text(
           "Sign Up",
           textAlign: TextAlign.center,
@@ -139,7 +132,8 @@ class _SignUpState extends State<SignUp> {
                             )),
                       ),
                       Positioned(
-                        height: 250,left: -20,
+                        height: 250,
+                        left: -20,
                         width: width + 20,
                         child: FadeAnimation(
                             1.3,
@@ -186,7 +180,7 @@ class _SignUpState extends State<SignUp> {
                                       boxShadow: [
                                         BoxShadow(
                                           color:
-                                          Color.fromRGBO(196, 135, 198, .3),
+                                              Color.fromRGBO(196, 135, 198, .3),
                                           blurRadius: 20,
                                           offset: Offset(0, 10),
                                         )
@@ -207,13 +201,13 @@ class _SignUpState extends State<SignUp> {
                                             },
                                             decoration: InputDecoration(
                                                 enabledBorder:
-                                                const OutlineInputBorder(
+                                                    const OutlineInputBorder(
                                                   borderSide: const BorderSide(
                                                       color: Color(0xff7266d8),
                                                       width: 0.7),
                                                 ),
                                                 border:
-                                                const OutlineInputBorder(),
+                                                    const OutlineInputBorder(),
                                                 hintText: "name",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey[600])),
@@ -233,13 +227,13 @@ class _SignUpState extends State<SignUp> {
                                             },
                                             decoration: InputDecoration(
                                                 enabledBorder:
-                                                const OutlineInputBorder(
+                                                    const OutlineInputBorder(
                                                   borderSide: const BorderSide(
                                                       color: Color(0xff7266d8),
                                                       width: 0.7),
                                                 ),
                                                 border:
-                                                const OutlineInputBorder(),
+                                                    const OutlineInputBorder(),
                                                 hintText: "email",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey[600])),
@@ -260,25 +254,25 @@ class _SignUpState extends State<SignUp> {
                                             },
                                             decoration: InputDecoration(
                                                 enabledBorder:
-                                                const OutlineInputBorder(
+                                                    const OutlineInputBorder(
                                                   borderSide: const BorderSide(
                                                       color: Color(0xff7266d8),
                                                       width: 0.7),
                                                 ),
                                                 border:
-                                                const OutlineInputBorder(),
+                                                    const OutlineInputBorder(),
                                                 hintText: "password",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey[600])),
                                             onSaved: (input) =>
-                                            _password = input),
+                                                _password = input),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
                               SizedBox(height: 20),
-                              FadeAnimation(1.9, signupButton),
+                              FadeAnimation(1.9, SignUpDocButton),
                               FadeAnimation(
                                 2,
                                 Center(

@@ -1,6 +1,7 @@
 import 'package:doc_app/account_pages/login1.dart';
 // import 'package:doc_app/account_pages/newpage.dart';
 import 'package:doc_app/home.dart';
+import 'package:doc_app/newpage.dart';
 import 'package:doc_app/onboarding%20screen/intro_screen.dart';
 import 'package:doc_app/onboarding%20screen/intro_screens.dart';
 import 'package:flutter/material.dart';
@@ -34,15 +35,15 @@ class OnBoardPageState extends State<OnBoardPage> with TickerProviderStateMixin 
     var screens = IntroScreens(
       onDone: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => Login(),
+          builder: (context) => LoginChoice(),
         ),
       ),
       onSkip: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => Login(),
+          builder: (context) => LoginChoice(),
         ),
       ),
-      footerBgColor: TinyColor(Color(0xffF5637F)).color,
+      footerBgColor: TinyColor(Color(0xff7266d8)).color,
       activeDotColor: Colors.white,
       footerRadius: 18.0,
 //      indicatorType: IndicatorType.CIRCLE,

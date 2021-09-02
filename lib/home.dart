@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doc_app/BottomNavBar.dart';
 import 'package:doc_app/chatbot.dart';
 import 'package:doc_app/chatroom.dart';
+import 'package:doc_app/queryform.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,17 +49,23 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
     print(response.statusCode);
   }
 
-  checkAuthentication() async {
-    // didChangeAppLifecycleState(state);
-    _auth.authStateChanges().listen((user) {
-      if (user == null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Onboarding()),
-        );
-      }
-    });
-  }
+  // checkAuthentication() async {
+  //   // didChangeAppLifecycleState(state);
+  //   _auth.authStateChanges().listen((user) {
+  //     if (user == null) {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => Onboarding()),
+  //       );
+  //     }
+  //     // else {
+  //     //    Navigator.push(
+  //     //     context,
+  //     //     MaterialPageRoute(builder: (context) => BottomNavBar()),
+  //     //   );
+  //     // }
+  //   });
+  // }
 
   getUser() async {
     User firebaseUser = _auth.currentUser;
@@ -82,14 +90,14 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    this.checkAuthentication();
+    // this.checkAuthentication();
     this.getUser();
     WidgetsBinding.instance.addObserver(this);
     setStatus("Online");
   }
 
   void setStatus(String status) async {
-    await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+    await _firestore.collection('doctors').doc(_auth.currentUser.uid).update({
       "status": status,
     });
   }
@@ -147,7 +155,7 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
       appBar: AppBar(
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Color(0xffF5637F),
+        backgroundColor: Color(0xff7266d8),
         elevation: 0,
       ),
       drawer: Padding(
@@ -228,6 +236,24 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
                 child: ListTile(
                   title: Text(
                     "Logout",
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  trailing: Icon(
+                    Icons.logout,
+                    size: 28,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FormFour()),
+                  );
+                },
+                child: ListTile(
+                  title: Text(
+                    "Doctor form",
                     style: TextStyle(fontSize: 17),
                   ),
                   trailing: Icon(
@@ -361,7 +387,7 @@ class _UserdataState extends State<Userdata> {
 
     void getdata(index) async {
       FirebaseFirestore _firestore = FirebaseFirestore.instance;
-      await _firestore.collection('users').get().then((value) {
+      await _firestore.collection('doctors').get().then((value) {
         setState(() {
           userMap = value.docs[index].data();
         });
@@ -371,60 +397,63 @@ class _UserdataState extends State<Userdata> {
 
     return Container(
       child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
-            else {
-              return Container(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        // return Container(
-                        //     child: Card(
-                        //       child: Column(
-                        //         children: [
-                        //           Text(
-                        //               snapshot.data.docs[index]['name']),
-                        //               Text(
-                        //               snapshot.data.docs[index]['email']),
-                        //         ],
-                        //       ),
-                        //     ));
-                        return Container(
-                          child: ListTile(
-                            onTap: () {
-                              getdata(index);
-                              String roomId = chatRoomId(
-                                  _auth.currentUser.displayName,
-                                  snapshot.data.docs[index]['name']);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => ChatRoom(
-                                    chatRoomId: roomId,
-                                    userMap: userMap,
-                                  ),
+        stream: FirebaseFirestore.instance.collection('doctors').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
+          else {
+            return Container(
+              child: SingleChildScrollView(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      // return Container(
+                      //     child: Card(
+                      //       child: Column(
+                      //         children: [
+                      //           Text(
+                      //               snapshot.data.docs[index]['name']),
+                      //               Text(
+                      //               snapshot.data.docs[index]['email']),
+                      //         ],
+                      //       ),
+                      //     ));
+                      return Container(
+                        child: ListTile(
+                          onTap: () {
+                            getdata(index);
+                            String roomId = chatRoomId(
+                                _auth.currentUser.displayName,
+                                snapshot.data.docs[index]['name']);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ChatRoom(
+                                  chatRoomId: roomId,
+                                  userMap: userMap,
                                 ),
-                              );
-                            },
-                            leading:
-                                Icon(Icons.account_box, color: Colors.black),
-                            title: Text(
-                              snapshot.data.docs[index]['name'],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
                               ),
+                            );
+                          },
+                          leading: Icon(Icons.account_box, color: Colors.black),
+                          title: Text(
+                            snapshot.data.docs[index]['name'],
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
                             ),
-                            subtitle: Text(snapshot.data.docs[index]['email']),
-                            trailing: Icon(Icons.chat, color: Colors.black),
                           ),
-                        );
-                      }));
-            }
-          }),
+                          subtitle: Text(snapshot.data.docs[index]['email']),
+                          trailing: Icon(Icons.chat, color: Colors.black),
+                        ),
+                      );
+                    }),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

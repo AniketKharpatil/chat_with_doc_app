@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:doc_app/Components/BottomNavBar.dart';
+import 'package:doc_app/BottomNavBar.dart';
 import 'package:doc_app/Components/DoctorCard.dart';
 import 'package:doc_app/Constants/Colors.dart';
 import 'package:doc_app/Constants/DoctorList.dart';
@@ -134,7 +134,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

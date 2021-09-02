@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc_app/Components/BottomNavBar.dart';
+import 'package:doc_app/BottomNavBar.dart';
 import 'package:doc_app/account_pages/resetpass.dart';
 import 'package:doc_app/account_pages/signup1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:doc_app/home.dart';
 import 'package:doc_app/services/animation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,7 +11,6 @@ class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
-
 
 class _LoginState extends State<Login> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,46 +22,44 @@ class _LoginState extends State<Login> {
 
   checkAuth() async {
     _auth.authStateChanges().listen((user) {
-        print(user);
-        _auth.currentUser.updateDisplayName(_name);
-        // Navigator.pushReplacementNamed(context, "home");
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => BottomNavBar()),
-          );
+      print(user);
+      _auth.currentUser.updateDisplayName(_name);
 
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => BottomNavBar()),
+      );
     });
-
   }
-
 
   login() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-        try {User user = (await _auth.signInWithEmailAndPassword(
-            email: _email, password: _password))
-        .user;
+      try {
+        User user = (await _auth.signInWithEmailAndPassword(
+                email: _email, password: _password))
+            .user;
 
-    if (user != null) {
-      print("Login Sucessfull");
-      _firestore
-          .collection('users')
-          .doc(_auth.currentUser.uid)
-          .get()
-          .then((value) => user.updateDisplayName(value['name']));
- Navigator.push(
+        if (user != null) {
+          print("Login Sucessfull");
+          _firestore
+              .collection('users')
+              .doc(_auth.currentUser.uid)
+              .get()
+              .then((value) => user.updateDisplayName(value['name']));
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => BottomNavBar()),
           );
-      return user;
-    } else {
-      print("Login Failed");
-      return user;
-    }
-  } catch (e) {
-          showError(e.message);
-          print(e);
+          return user;
+        } else {
+          print("Login Failed");
+          return user;
         }
+      } catch (e) {
+        showError(e.message);
+        print(e);
+      }
     }
   }
 
@@ -85,21 +81,19 @@ class _LoginState extends State<Login> {
     );
   }
 
-   @override
+  @override
   void initState() {
     super.initState();
     this.checkAuth();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final loginButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xffEB6383),
+      color: Color(0xff7266d8),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.55,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -107,7 +101,9 @@ class _LoginState extends State<Login> {
         child: Text(
           "Login",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white,),
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -120,12 +116,13 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  height: 300,
+                  height: 250,
                   child: Stack(
                     children: <Widget>[
                       Positioned(
-                        top: -40,
-                        height: 450,
+                        // top: -20,
+                        left: 90,
+                        height: 320,
                         width: width,
                         child: FadeAnimation(
                             1,
@@ -138,7 +135,8 @@ class _LoginState extends State<Login> {
                             )),
                       ),
                       Positioned(
-                        height: 450,
+                        height: 250,
+                        left: -20,
                         width: width + 20,
                         child: FadeAnimation(
                             1.3,
@@ -206,10 +204,14 @@ class _LoginState extends State<Login> {
                                               return null;
                                             },
                                             decoration: InputDecoration(
-                                                enabledBorder: const OutlineInputBorder(
-                                                  borderSide: const BorderSide(color: Color(0xffEB6383), width: 0.7),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: const BorderSide(
+                                                      color: Color(0xff7266d8),
+                                                      width: 0.7),
                                                 ),
-                                                border: const OutlineInputBorder(),
+                                                border:
+                                                    const OutlineInputBorder(),
                                                 hintText: "email",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey[600])),
@@ -229,10 +231,14 @@ class _LoginState extends State<Login> {
                                               return null;
                                             },
                                             decoration: InputDecoration(
-                                                enabledBorder: const OutlineInputBorder(
-                                                  borderSide: const BorderSide(color: Color(0xffEB6383), width: 0.7),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: const BorderSide(
+                                                      color: Color(0xff7266d8),
+                                                      width: 0.7),
                                                 ),
-                                                border: const OutlineInputBorder(),
+                                                border:
+                                                    const OutlineInputBorder(),
                                                 hintText: "password",
                                                 hintStyle: TextStyle(
                                                     color: Colors.grey[600])),
@@ -251,7 +257,8 @@ class _LoginState extends State<Login> {
                                     child: Text(
                                       "Forgot Password?",
                                       style: TextStyle(
-                                          color: Color(0xffEB6383).withOpacity(0.7),
+                                        color:
+                                            Color(0xff7266d8).withOpacity(0.7),
                                       ),
                                     ),
                                     onPressed: () => Navigator.of(context).push(
@@ -280,8 +287,9 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20,),
-                           
+                              SizedBox(
+                                height: 20,
+                              ),
                             ],
                           ),
                         ),
@@ -294,7 +302,4 @@ class _LoginState extends State<Login> {
           ),
         ));
   }
-
-
-
 }
