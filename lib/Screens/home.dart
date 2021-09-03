@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc_app/BottomNavBar.dart';
-import 'package:doc_app/chatbot.dart';
+import 'package:doc_app/Screens/chatbot.dart';
 import 'package:doc_app/chatroom.dart';
+import 'package:doc_app/qrscan/qr_scan_page.dart';
 import 'package:doc_app/queryform.dart';
+import 'package:doc_app/services/userdatafordoc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'onboarding screen/onboard_main.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage2 extends StatefulWidget {
   const HomePage2({Key key}) : super(key: key);
@@ -42,43 +41,25 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
     return await _auth.signOut();
   }
 
-  Future adharOtp() async {
-    var url = Uri.parse('https://auth.uidai.gov.in');
-    var response = await http.post(url, body: {});
-    print(response.body);
-    print(response.statusCode);
-  }
-
-  // checkAuthentication() async {
-  //   // didChangeAppLifecycleState(state);
-  //   _auth.authStateChanges().listen((user) {
-  //     if (user == null) {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => Onboarding()),
-  //       );
-  //     }
-  //     // else {
-  //     //    Navigator.push(
-  //     //     context,
-  //     //     MaterialPageRoute(builder: (context) => BottomNavBar()),
-  //     //   );
-  //     // }
-  //   });
+  // Future adharOtp() async {
+  //   var url = Uri.parse('https://auth.uidai.gov.in');
+  //   var response = await http.post(url, body: {});
+  //   print(response.body);
+  //   print(response.statusCode);
   // }
 
-  getUser() async {
-    User firebaseUser = _auth.currentUser;
-    await firebaseUser?.reload();
-    firebaseUser = _auth.currentUser;
+  // getUser() async {
+  //   User firebaseUser = _auth.currentUser;
+  //   await firebaseUser?.reload();
+  //   firebaseUser = _auth.currentUser;
 
-    if (firebaseUser != null) {
-      setState(() {
-        this.user = firebaseUser;
-        this.isloggedin = true;
-      });
-    }
-  }
+  //   if (firebaseUser != null) {
+  //     setState(() {
+  //       this.user = firebaseUser;
+  //       this.isloggedin = true;
+  //     });
+  //   }
+  // }
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -91,7 +72,7 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     // this.checkAuthentication();
-    this.getUser();
+    // this.getUser();
     WidgetsBinding.instance.addObserver(this);
     setStatus("Online");
   }
@@ -158,7 +139,8 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
         backgroundColor: Color(0xff7266d8),
         elevation: 0,
       ),
-      drawer: Padding(
+      drawer: 
+      Padding(
         padding: EdgeInsets.only(top: 16, bottom: 5),
         child: Container(
           decoration: BoxDecoration(
@@ -266,6 +248,24 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
                 onPressed: () {
                   Navigator.push(
                     context,
+                    MaterialPageRoute(builder: (context) => QRScanPage()),
+                  );
+                },
+                child: ListTile(
+                  title: Text(
+                    "Qr Scan",
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  trailing: Icon(
+                    Icons.logout,
+                    size: 28,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
                     MaterialPageRoute(builder: (context) => ChatBotPage()),
                   );
                 },
@@ -285,6 +285,7 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
         ),
       ),
       backgroundColor: Color(0xfff8f8f8),
+     
       body: isLoading
           ? Center(
               child: Container(
@@ -359,101 +360,6 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
                 ],
               ),
             ),
-    );
-  }
-}
-
-class Userdata extends StatefulWidget {
-  const Userdata({Key key}) : super(key: key);
-  @override
-  _UserdataState createState() => _UserdataState();
-}
-
-class _UserdataState extends State<Userdata> {
-  @override
-  Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-
-    Map<String, dynamic> userMap;
-
-    String chatRoomId(String user1, String user2) {
-      if (user1[0].toLowerCase().codeUnits[0] >
-          user2.toLowerCase().codeUnits[0]) {
-        return "$user1$user2";
-      } else {
-        return "$user2$user1";
-      }
-    }
-
-    void getdata(index) async {
-      FirebaseFirestore _firestore = FirebaseFirestore.instance;
-      await _firestore.collection('doctors').get().then((value) {
-        setState(() {
-          userMap = value.docs[index].data();
-        });
-        print(userMap);
-      });
-    }
-
-    return Container(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('doctors').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: CircularProgressIndicator());
-          else {
-            return Container(
-              child: SingleChildScrollView(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.docs.length,
-                    itemBuilder: (context, index) {
-                      // return Container(
-                      //     child: Card(
-                      //       child: Column(
-                      //         children: [
-                      //           Text(
-                      //               snapshot.data.docs[index]['name']),
-                      //               Text(
-                      //               snapshot.data.docs[index]['email']),
-                      //         ],
-                      //       ),
-                      //     ));
-                      return Container(
-                        child: ListTile(
-                          onTap: () {
-                            getdata(index);
-                            String roomId = chatRoomId(
-                                _auth.currentUser.displayName,
-                                snapshot.data.docs[index]['name']);
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => ChatRoom(
-                                  chatRoomId: roomId,
-                                  userMap: userMap,
-                                ),
-                              ),
-                            );
-                          },
-                          leading: Icon(Icons.account_box, color: Colors.black),
-                          title: Text(
-                            snapshot.data.docs[index]['name'],
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          subtitle: Text(snapshot.data.docs[index]['email']),
-                          trailing: Icon(Icons.chat, color: Colors.black),
-                        ),
-                      );
-                    }),
-              ),
-            );
-          }
-        },
-      ),
     );
   }
 }

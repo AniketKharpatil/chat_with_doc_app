@@ -47,7 +47,7 @@ class ChatRoom extends StatelessWidget {
         backgroundColor: Colors.indigo,
         title: StreamBuilder<DocumentSnapshot>(
           stream:
-              _firestore.collection("users").doc(userMap['uid']).snapshots(),
+              _firestore.collection("doctors").doc(userMap['uid']).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               return Container(

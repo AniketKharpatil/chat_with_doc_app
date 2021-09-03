@@ -1,7 +1,8 @@
+import 'package:doc_app/Screens/BottomNavBar.dart';
 import 'package:doc_app/account_pages/login1.dart';
 // import 'package:doc_app/account_pages/newpage.dart';
-import 'package:doc_app/home.dart';
-import 'package:doc_app/newpage.dart';
+import 'package:doc_app/Screens/home.dart';
+import 'package:doc_app/onboarding%20screen/newpage.dart';
 import 'package:doc_app/onboarding%20screen/intro_screen.dart';
 import 'package:doc_app/onboarding%20screen/intro_screens.dart';
 import 'package:flutter/material.dart';
@@ -49,22 +50,22 @@ class OnBoardPageState extends State<OnBoardPage> with TickerProviderStateMixin 
 //      indicatorType: IndicatorType.CIRCLE,
       slides: [
         IntroScreen(
-          title: 'Search Pills',
+          title: 'Healthcare at home',
           imageAsset: 'assets/images/onboard3.png',
-          description: 'Know more about options for different contraceptive pills',
+          description: 'Easy access to medical consultation even in remote areas',
           headerBgColor: Colors.white,
         ),
         IntroScreen(
-          title: 'Pill tracker',
+          title: 'Connect with Doctors',
           headerBgColor: Colors.white,
           imageAsset: 'assets/images/onboard2.png',
-          description: "Track you medication cycle for any number of days",
+          description: "One-to-one Video Chat for Doctor Patient Communication",
         ),
         IntroScreen(
-          title: 'FAQs',
+          title: 'ChatBot',
           headerBgColor: Colors.white,
           imageAsset: 'assets/images/onboard1.png',
-          description: "Educate yourself as well as ask any doubts from professional",
+          description: " Ask any doubts to our Chatbot",
         ),
       ],
     );
@@ -109,7 +110,7 @@ class HomeController extends StatelessWidget {
             return OnBoardPage();
             // return Home();
           } else {
-            return HomePage2();
+            return BottomNavBar();
           }
           // return user ? Home() : SignUpView();
         }

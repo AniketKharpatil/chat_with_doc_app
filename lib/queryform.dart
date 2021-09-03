@@ -84,10 +84,9 @@ class _FormFourState extends State<FormFour> with Validator {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      final filepath = file?.path;
-      final destination =  'files/$filepath';
+      final filepath = cert?.path;
 
-      FirebaseUplaodNewFile.uploadFile(destination, file);
+      FirebaseUplaodNewFile.uploadFile(filepath, cert);
       setState(() {});
 
       /////////////////////adding data to database "doctors"///////////////////////////////
@@ -102,12 +101,13 @@ class _FormFourState extends State<FormFour> with Validator {
       });
       setState(() => id = ref.id);
       print(ref.id);
+      showstat();
 
       // Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }
   }
 
-  showError() {
+  showstat() {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -305,7 +305,7 @@ class _FormFourState extends State<FormFour> with Validator {
                               ),
                               file?.path == null
                                   ? Container(
-                                      child: CircularProgressIndicator(),
+                                      child: Text("Add photo"),
                                     )
                                   : GestureDetector(
                                       onTap: getFile,
@@ -363,21 +363,12 @@ class _FormFourState extends State<FormFour> with Validator {
                                 height: minValue * 1,
                               ),
                               _buildDescription(),
+                                 Text("Degree Certificate or relevant auhtentication informative file"),
                               TextButton(
                                   onPressed: getCert, child: Text("Add file")),
                               Text(cert?.path.toString()),
 
-                              // file?.path == null
-                              //     ? Container()
-                              //     : Container(
-                              //         child: Image.file(
-                              //           File(file?.path),
-                              //           fit: BoxFit.cover,
-                              //           width: double.infinity,
-                              //         ),
-                              //       ),SizedBox(
-                              //   height: minValue * 1,
-                              // ),
+                       
                             ],
                           ),
                         ),

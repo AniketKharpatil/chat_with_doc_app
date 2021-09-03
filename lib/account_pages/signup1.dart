@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc_app/account_pages/login1.dart';
-import 'package:doc_app/home.dart';
+import 'package:doc_app/Screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:doc_app/services/animation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../BottomNavBar.dart';
+import '../Screens/BottomNavBar.dart';
 
 class SignUp extends StatefulWidget {
   @override

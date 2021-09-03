@@ -1,7 +1,7 @@
 import 'package:doc_app/Constants/Colors.dart';
 import 'package:doc_app/Constants/Doubles.dart';
 import 'package:doc_app/Constants/Styles.dart';
-import 'package:doc_app/Models/Doctor.dart';
+import 'package:doc_app/Components/Doctor.dart';
 import 'package:doc_app/Screens/DoctorPage/Delegate.dart';
 import 'package:doc_app/Screens/DoctorPage/InfoCard.dart';
 import 'package:flutter/material.dart';

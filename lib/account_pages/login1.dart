@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc_app/BottomNavBar.dart';
+import 'package:doc_app/Screens/BottomNavBar.dart';
 import 'package:doc_app/account_pages/resetpass.dart';
 import 'package:doc_app/account_pages/signup1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,11 +24,12 @@ class _LoginState extends State<Login> {
     _auth.authStateChanges().listen((user) {
       print(user);
       _auth.currentUser.updateDisplayName(_name);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BottomNavBar()),
-      );
+      if (user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavBar()),
+        );
+      }
     });
   }
 
@@ -44,6 +45,12 @@ class _LoginState extends State<Login> {
           print("Login Sucessfull");
           _firestore
               .collection('users')
+              .doc(_auth.currentUser.uid)
+              .get()
+              .then((value) => user.updateDisplayName(value['name']));
+
+          _firestore
+              .collection('doctors')
               .doc(_auth.currentUser.uid)
               .get()
               .then((value) => user.updateDisplayName(value['name']));

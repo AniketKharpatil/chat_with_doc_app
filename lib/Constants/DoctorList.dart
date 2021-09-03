@@ -1,4 +1,4 @@
-import 'package:doc_app/Models/Doctor.dart';
+import 'package:doc_app/Components/Doctor.dart';
 
 List<Doctor> kDoctorList = [
   Doctor(

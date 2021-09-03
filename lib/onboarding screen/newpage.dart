@@ -1,4 +1,5 @@
 // import 'package:contra_care/views/homepage.dart';
+import 'package:doc_app/account_pages/doc_login.dart';
 import 'package:doc_app/account_pages/login1.dart';
 import 'package:doc_app/account_pages/signupdoc.dart';
 import 'package:doc_app/services/animation.dart';
@@ -23,13 +24,13 @@ class _LoginChoiceState extends State<LoginChoice> {
     final loginButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xffEB6383),
+      color: Color(0xff7266d8),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.55,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: openLoginPage,
         child: Text(
-          "Login",
+          "User Login",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -38,16 +39,16 @@ class _LoginChoiceState extends State<LoginChoice> {
       ),
     );
 
-    final signupdocButton = Material(
+    final logindocButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xffEB6383),
+      color: Color(0xff7266d8),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.55,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: openSignupDoc,
         child: Text(
-          "Signup as Doctor",
+          "Doctor Login",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -133,10 +134,10 @@ class _LoginChoiceState extends State<LoginChoice> {
                                       1.6,
                                       Center(
                                         child: Text(
-                                          "Login to your account",
+                                          "Login as a user",
                                           style: TextStyle(
-                                            color: Color(0xffEB6383)
-                                                .withOpacity(0.8),
+                                            color: Colors.grey[700],
+                                            fontSize: 20,
                                           ),
                                         ),
                                       ),
@@ -146,19 +147,23 @@ class _LoginChoiceState extends State<LoginChoice> {
                                     ),
                                     FadeAnimation(1.7, loginButton),
                                     SizedBox(
-                                      height: 32,
+                                      height: 40,
                                     ),
                                     FadeAnimation(
                                       2,
                                       Center(
                                         child: Text(
-                                          "Login as a Doctor",
+                                          "Login As Doctor",
                                           style: TextStyle(
-                                              color: Colors.grey[700]),
+                                              color: Colors.grey[700],
+                                              fontSize: 20),
                                         ),
                                       ),
                                     ),
-                                    FadeAnimation(1.7, signupdocButton),
+                                    SizedBox(
+                                      height: 14,
+                                    ),
+                                    FadeAnimation(1.7, logindocButton),
                                   ],
                                 ),
                               )),
@@ -178,7 +183,9 @@ class _LoginChoiceState extends State<LoginChoice> {
   openLoginPage() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
+
   openSignupDoc() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpDoc()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DocLogin()));
   }
 }

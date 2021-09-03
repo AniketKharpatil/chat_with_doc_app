@@ -1,5 +1,5 @@
 import 'package:doc_app/Constants/Styles.dart';
-import 'package:doc_app/Models/Doctor.dart';
+import 'package:doc_app/Components/Doctor.dart';
 import 'package:doc_app/Screens/DoctorPage/DoctorPage.dart';
 import 'package:flutter/material.dart';
 
