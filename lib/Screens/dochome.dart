@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc_app/Screens/chatbot.dart';
 import 'package:doc_app/chatroom.dart';
-import 'package:doc_app/qrscan/qr_scan_page.dart';
 import 'package:doc_app/queryform.dart';
 import 'package:doc_app/services/userdatafordoc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,26 +39,6 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
     return await _auth.signOut();
   }
 
-  // Future adharOtp() async {
-  //   var url = Uri.parse('https://auth.uidai.gov.in');
-  //   var response = await http.post(url, body: {});
-  //   print(response.body);
-  //   print(response.statusCode);
-  // }
-
-  // getUser() async {
-  //   User firebaseUser = _auth.currentUser;
-  //   await firebaseUser?.reload();
-  //   firebaseUser = _auth.currentUser;
-
-  //   if (firebaseUser != null) {
-  //     setState(() {
-  //       this.user = firebaseUser;
-  //       this.isloggedin = true;
-  //     });
-  //   }
-  // }
-
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Map<String, dynamic> userMap;
@@ -71,14 +49,12 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    // this.checkAuthentication();
-    // this.getUser();
     WidgetsBinding.instance.addObserver(this);
     setStatus("Online");
   }
 
   void setStatus(String status) async {
-    await _firestore.collection('doctors').doc(_auth.currentUser.uid).update({
+    await _firestore.collection('users').doc(_auth.currentUser.uid).update({
       "status": status,
     });
   }
@@ -139,8 +115,7 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
         backgroundColor: Color(0xff7266d8),
         elevation: 0,
       ),
-      drawer: 
-      Padding(
+      drawer: Padding(
         padding: EdgeInsets.only(top: 16, bottom: 5),
         child: Container(
           decoration: BoxDecoration(
@@ -148,7 +123,7 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
                 bottomRight: Radius.circular(40),
                 topRight: Radius.circular(40),
               ),
-              color: Color(0xfff78298)),
+              color: Color(0xff7266d8)),
 
           width: MediaQuery.of(context).size.width * 0.75,
           height: MediaQuery.of(context).size.height * 0.875,
@@ -160,8 +135,8 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
                 child: DrawerHeader(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
-                      Color(0xfff78298),
-                      Color(0xfffbccd5),
+                      Color(0xff7266d8),
+                      Colors.grey[50],
                     ]),
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -244,48 +219,11 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QRScanPage()),
-                  );
-                },
-                child: ListTile(
-                  title: Text(
-                    "Qr Scan",
-                    style: TextStyle(fontSize: 17),
-                  ),
-                  trailing: Icon(
-                    Icons.logout,
-                    size: 28,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatBotPage()),
-                  );
-                },
-                child: ListTile(
-                  title: Text(
-                    "Chatbot",
-                    style: TextStyle(fontSize: 17),
-                  ),
-                  trailing: Icon(
-                    Icons.logout,
-                    size: 28,
-                  ),
-                ),
-              ),
             ],
           ),
         ),
       ),
       backgroundColor: Color(0xfff8f8f8),
-     
       body: isLoading
           ? Center(
               child: Container(

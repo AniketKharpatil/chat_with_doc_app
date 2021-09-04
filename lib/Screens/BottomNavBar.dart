@@ -4,7 +4,7 @@ import 'package:doc_app/Screens/DoctorPage/DoctorPage.dart';
 import 'package:doc_app/Screens/HomePage/HomePage.dart';
 import 'package:doc_app/Screens/HomePage/chatlistdoctor.dart';
 import 'package:doc_app/Screens/chatbot.dart';
-import 'package:doc_app/Screens/home.dart';
+import 'package:doc_app/Screens/dochome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

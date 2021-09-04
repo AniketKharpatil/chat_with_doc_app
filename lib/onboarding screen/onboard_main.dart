@@ -1,7 +1,7 @@
 import 'package:doc_app/Screens/BottomNavBar.dart';
 import 'package:doc_app/account_pages/login1.dart';
 // import 'package:doc_app/account_pages/newpage.dart';
-import 'package:doc_app/Screens/home.dart';
+import 'package:doc_app/Screens/dochome.dart';
 import 'package:doc_app/onboarding%20screen/newpage.dart';
 import 'package:doc_app/onboarding%20screen/intro_screen.dart';
 import 'package:doc_app/onboarding%20screen/intro_screens.dart';

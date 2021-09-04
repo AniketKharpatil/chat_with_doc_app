@@ -8,6 +8,8 @@ import 'package:doc_app/services/chatbotService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../chatroom.dart';
+import '../../chatroom2.dart';
 import 'HomeCard.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +19,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -52,39 +54,12 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
-                            onPressed: () {
-                              // showDialog(
-                              //   context: context,
-                              //   builder: (BuildContext context) =>
-                              //       new AlertDialog(
-                              //     title: Text('${user.displayName}'),
-                              //     content: new Column(
-                              //       mainAxisSize: MainAxisSize.min,
-                              //       crossAxisAlignment:
-                              //           CrossAxisAlignment.start,
-                              //       children: <Widget>[
-                              //         Text('${user.email}'),
-                              //       ],
-                              //     ),
-                              //     actions: <Widget>[
-                              //       new TextButton(
-                              //         onPressed: () {
-                              //           Navigator.of(context).pop();
-                              //         },
-                              //         child: const Text('Close'),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // );
-                            },
-                            child: Text(
-                              "My profile",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
+                          Text(
+                            "My profile",
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
                           ),
                         ],
                       ),
@@ -117,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: ListTile(
                   title: Text(
-                    "Qr Scan",
+                    "QR Scan",
                     style: TextStyle(fontSize: 17),
                   ),
                   trailing: Icon(
@@ -137,7 +112,7 @@ class _HomePageState extends State<HomePage> {
               floating: true,
               backgroundColor: Colors.white70,
               title: Text(
-                'Aniket Kharpatil',
+                'Welcome to Doc chat App',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: kPrimaryColor,
@@ -272,9 +247,7 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
-                  ]
-                  // kDoctorList.map((e) => DoctorCard(doctor: e)).toList(),
-                  ),
+                  ]),
             )
 
             // SliverPadding(
@@ -292,13 +265,62 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Map<String, dynamic> userMap;
+  
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addObserver(this);
+  //   setStatus("Online");
+  // }
+
+  // void setStatus(String status) async {
+  //   await _firestore.collection('doctors').doc(_auth.currentUser.uid).update({
+  //     "status": status,
+  //   });
+  // }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     // online
+  //     setStatus("Online");
+  //   } else {
+  //     // offline
+  //     setStatus("Offline");
+  //   }
+  // }
+
+  String chatRoomId(String user1, String user2) {
+    if (user1[0].toLowerCase().codeUnits[0] >
+        user2.toLowerCase().codeUnits[0]) {
+      return "$user1$user2";
+    } else {
+      return "$user2$user1";
+    }
+  }
+
+  void getdata(index) async {
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    await _firestore.collection('doctors_data').get().then((value) {
+      setState(() {
+        userMap = value.docs[index].data();
+      });
+      print(userMap);
+    });
+  }
+
   showDetails(String name, int index) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(name),
         content: Card(
-          child: Container(height: 300,width: 300,
+          child: Container(
+              height: 300,
+              width: 300,
               child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('doctors_data')
@@ -324,14 +346,16 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "College Name: ${snapshot.data.docs[index]['college']}", style: TextStyle(
+                              "College Name: ${snapshot.data.docs[index]['college']}",
+                              style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
                               ),
                             ),
                             Text(
-                              "Years of Experience: ${snapshot.data.docs[index]['experience']}", style: TextStyle(
+                              "Years of Experience: ${snapshot.data.docs[index]['experience']}",
+                              style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
@@ -344,7 +368,23 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
                               ),
-                            )
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  getdata(index);
+                                  String roomId = chatRoomId(
+                                      _auth.currentUser.displayName,
+                                      snapshot.data.docs[index]['name']);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => ChatRoom2(
+                                        chatRoomId: roomId,
+                                        userMap: userMap,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.chat, color: Colors.black))
                           ],
                         ),
                       );

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc_app/account_pages/login1.dart';
-import 'package:doc_app/Screens/home.dart';
+import 'package:doc_app/Screens/dochome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:doc_app/services/animation.dart';

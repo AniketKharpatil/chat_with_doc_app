@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:doc_app/services/firestore_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doc_app/account_pages/login1.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ class _FormFourState extends State<FormFour> with Validator {
       file = File(path);
     });
   }
-  
 
   Future getCert() async {
     final fileResult = await FilePicker.platform.pickFiles();
@@ -75,10 +73,25 @@ class _FormFourState extends State<FormFour> with Validator {
   String name, description, email, mobile, specialization, exp, college;
 
   FirebaseAuth _auth = FirebaseAuth.instance;
+  User user1 = FirebaseAuth.instance.currentUser;
   final _storage = Path.FirebaseStorage.instance;
 
   final Color activeColor = Colors.black;
   final Color inActiveColor = Colors.white;
+
+  void updateData() async {
+    await db.collection('doctors_data').doc(user1.uid).set({
+      'name': name,
+      'email': email,
+      'uid': user1.uid,
+      'role': 'doctor',
+      'status': 'unavailable',
+      'college': college,
+      'experience': exp,
+      'specialization': specialization,
+      'certificate': cert?.path.toString()
+    }, SetOptions(merge: true));
+  }
 
   void createData() async {
     if (_formKey.currentState.validate()) {
@@ -88,20 +101,34 @@ class _FormFourState extends State<FormFour> with Validator {
 
       FirebaseUplaodNewFile.uploadFile(filepath, cert);
       setState(() {});
+      updateData();
 
       /////////////////////adding data to database "doctors"///////////////////////////////
-      DocumentReference ref = await db.collection('doctors_data').add({
-        'name': name,
-        'desc': description,
-        'email': email,
-        'college': college,
-        'experience': exp,
-        'specialization': specialization,
-        'certificate': cert?.path.toString()
-      });
-      setState(() => id = ref.id);
-      print(ref.id);
-      showstat();
+      // DocumentReference ref = await db.collection('doctors_data').add({
+      //   'name': name,
+      //   'desc': description,
+      //   'email': email,
+      //   'college': college,
+      //   'experience': exp,
+      //   'specialization': specialization,
+      //   'certificate': cert?.path.toString()
+      // });
+      // setState(() => id = ref.id);
+      // print(ref.id);
+      // showstat();
+
+      // DocumentReference ref = await db.collection('doctors_data').doc(id).add({
+      //   'name': name,
+      //   'desc': description,
+      //   'email': email,
+      //   'college': college,
+      //   'experience': exp,
+      //   'specialization': specialization,
+      //   'certificate': cert?.path.toString()
+      // });
+      // setState(() => id = ref.id);
+      // print(ref.id);
+      // showstat();
 
       // Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }
@@ -363,12 +390,11 @@ class _FormFourState extends State<FormFour> with Validator {
                                 height: minValue * 1,
                               ),
                               _buildDescription(),
-                                 Text("Degree Certificate or relevant auhtentication informative file"),
+                              Text(
+                                  "Degree Certificate or relevant auhtentication informative file"),
                               TextButton(
                                   onPressed: getCert, child: Text("Add file")),
                               Text(cert?.path.toString()),
-
-                       
                             ],
                           ),
                         ),

@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class ChatRoom extends StatelessWidget {
+class ChatRoom2 extends StatelessWidget {
   final Map<String, dynamic> userMap;
   final String chatRoomId;
   // Map<String, dynamic> map = docSnapshot.data()!;
 // DateTime dt = (DocumentSnapshot.userMap['time'] as Timestamp).toDate();
 
-  ChatRoom({this.chatRoomId, this.userMap});
+  ChatRoom2({this.chatRoomId, this.userMap});
 
   final TextEditingController _message = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -47,7 +47,7 @@ class ChatRoom extends StatelessWidget {
         backgroundColor: Colors.indigo,
         title: StreamBuilder<DocumentSnapshot>(
           stream:
-              _firestore.collection("users").doc(userMap['uid']).snapshots(),
+              _firestore.collection("doctors").doc(userMap['uid']).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               return Container(
