@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:doc_app/Screens/dochome.dart';
 import 'package:doc_app/services/firestore_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -98,10 +99,15 @@ class _FormFourState extends State<FormFour> with Validator {
       _formKey.currentState.save();
 
       final filepath = cert?.path;
+      final filepath2 = file?.path;
 
       FirebaseUplaodNewFile.uploadFile(filepath, cert);
+
       setState(() {});
-      updateData();
+      
+      
+      FirebaseUplaodNewFile.uploadFile(filepath2, file);
+      showstat();
 
       /////////////////////adding data to database "doctors"///////////////////////////////
       // DocumentReference ref = await db.collection('doctors_data').add({
@@ -134,7 +140,7 @@ class _FormFourState extends State<FormFour> with Validator {
     }
   }
 
-  showstat() {
+  void showstat() {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -143,7 +149,10 @@ class _FormFourState extends State<FormFour> with Validator {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              Navigator.of(ctx).pop();
+               Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage2()),
+        );
             },
             child: Text('OK'),
           )
@@ -331,9 +340,16 @@ class _FormFourState extends State<FormFour> with Validator {
                                 height: minValue * 1,
                               ),
                               file?.path == null
-                                  ? Container(
-                                      child: Text("Add photo"),
-                                    )
+                                  ? GestureDetector(
+                                      onTap: getFile,
+                                    child: Container(
+                                        child: CircleAvatar(
+                                          radius: 50.0,
+                                          backgroundImage: AssetImage(
+                                              "assets/images/profile.png"),
+                                        ),
+                                      ),
+                                  )
                                   : GestureDetector(
                                       onTap: getFile,
                                       child: CircleAvatar(
@@ -391,7 +407,7 @@ class _FormFourState extends State<FormFour> with Validator {
                               ),
                               _buildDescription(),
                               Text(
-                                  "Degree Certificate or relevant auhtentication informative file"),
+                                  "Degree Certificate or relevant informative file"),
                               TextButton(
                                   onPressed: getCert, child: Text("Add file")),
                               Text(cert?.path.toString()),

@@ -7,8 +7,6 @@ import 'package:doc_app/qrscan/qr_scan_page.dart';
 import 'package:doc_app/services/chatbotService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../../chatroom.dart';
 import '../../chatroom2.dart';
 import 'HomeCard.dart';
 
@@ -179,7 +177,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   children: [
                     StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
-                          .collection('doctors')
+                          .collection('doctors_data')
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -197,52 +195,134 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                             snapshot.data.docs[index]['name'],
                                             index);
                                       },
-                                      child: Container(
-                                        child: Card(
-                                          child: Column(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 30,
-                                                backgroundImage: AssetImage(
-                                                    'assets/images/background.png'),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      snapshot.data.docs[index]
-                                                          ['name'],
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        // color: kPrimaryColor,
-                                                        fontSize: 20,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Container(
+                                          child: Card(
+                                            shadowColor: Colors.indigo,
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25.0),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                2, 5, 2, 0),
+                                                        child: CircleAvatar(
+                                                          radius: 36,
+                                                          backgroundImage:
+                                                              AssetImage(
+                                                                  'assets/images/background.png'),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      snapshot.data.docs[index]
-                                                          ['email'],
-                                                      style: TextStyle(
-                                                        // color: kPrimaryColor,
-                                                        fontSize: 12,
+                                                      Column(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                            .all(
+                                                                        8.0)
+                                                                    .copyWith(
+                                                                        bottom:
+                                                                            2,
+                                                                        left:
+                                                                            10),
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  snapshot.data
+                                                                              .docs[
+                                                                          index]
+                                                                      ['name'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    // color: kPrimaryColor,
+                                                                    fontSize:
+                                                                        20,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                            .all(
+                                                                        8.0)
+                                                                    .copyWith(
+                                                                        bottom:
+                                                                            2,
+                                                                        left:
+                                                                            20),
+                                                            child: Text(
+                                                              "${snapshot.data.docs[index]['specialization']}",
+                                                              style: TextStyle(
+                                                                  fontSize: 15
+                                                                  // color: kPrimaryColor,
+                                                                  ),
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                              Text(
-                                                "Therapist",
-                                                style: TextStyle(fontSize: 15
-                                                    // color: kPrimaryColor,
-                                                    ),
-                                              )
-                                            ],
+                                            ),
                                           ),
                                         ),
                                       )),
                                 );
+                                //       Container(
+                                //         child: Card(
+                                //           child: Column(
+                                //             children: [
+                                //               CircleAvatar(
+                                //                 radius: 30,
+                                //                 backgroundImage: AssetImage(
+                                //                     'assets/images/background.png'),
+                                //               ),
+                                //               Padding(
+                                //                 padding:
+                                //                     const EdgeInsets.all(8.0),
+                                //                 child: Row(
+                                //                   children: [
+                                //                     Text(
+                                //                       snapshot.data.docs[index]
+                                //                           ['name'],
+                                //                       style: TextStyle(
+                                //                         fontWeight:
+                                //                             FontWeight.bold,
+                                //                         // color: kPrimaryColor,
+                                //                         fontSize: 20,
+                                //                       ),
+                                //                     ),
+                                //                   ],
+                                //                 ),
+                                //               ),
+                                //               Text(
+                                //                 "Therapist",
+                                //                 style: TextStyle(fontSize: 15
+                                //                     // color: kPrimaryColor,
+                                //                     ),
+                                //               )
+                                //             ],
+                                //           ),
+                                //         ),
+                                //       )),
+                                // );
                               });
                         }
                       },
@@ -268,7 +348,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Map<String, dynamic> userMap;
-  
+
   // @override
   // void initState() {
   //   super.initState();
@@ -277,7 +357,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   // }
 
   // void setStatus(String status) async {
-  //   await _firestore.collection('doctors').doc(_auth.currentUser.uid).update({
+  //   await _firestore
+  //       .collection('doctors_data')
+  //       .doc(_auth.currentUser.uid)
+  //       .update({
   //     "status": status,
   //   });
   // }
@@ -308,6 +391,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       setState(() {
         userMap = value.docs[index].data();
       });
+      setState(() {});
       print(userMap);
     });
   }
@@ -316,90 +400,203 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(name),
-        content: Card(
-          child: Container(
-              height: 300,
-              width: 300,
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('doctors_data')
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (!snapshot.hasData)
-                      return Center(child: CircularProgressIndicator());
-                    else {
-                      return Container(
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 40,
-                              backgroundImage:
-                                  AssetImage('assets/images/background.png'),
+        backgroundColor: Color(0xffd4d1f3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(28.0),
+        ),
+        // title: Text(name),
+        content: Container(
+          height: 360,
+          width: 350,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(28.0),
+            ),
+            color: Color(0xff7266d8),
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('doctors_data')
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData)
+                    return Center(child: CircularProgressIndicator());
+                  else {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundImage:
+                                AssetImage('assets/images/onboard1.png'),
+                          ),
+                        ),
+                        Text(
+                          "${snapshot.data.docs[index]['name']}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          "${snapshot.data.docs[index]['specialization']}",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            letterSpacing: 2.5,
+                            color: Colors.blue.shade50,
+                          ),
+                        ),
+                        Container(
+                          width: 170.0,
+                          margin: EdgeInsets.symmetric(vertical: 2.0),
+                          child: Divider(
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            Text(
-                              "Doctor Name: ${snapshot.data.docs[index]['name']}",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
-                            ),
-                            Text(
-                              "College Name: ${snapshot.data.docs[index]['college']}",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
-                            ),
-                            Text(
-                              "Years of Experience: ${snapshot.data.docs[index]['experience']}",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
-                            ),
-                            Text(
-                              "Specialization: ${snapshot.data.docs[index]['specialization']}",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  getdata(index);
-                                  String roomId = chatRoomId(
-                                      _auth.currentUser.displayName,
-                                      snapshot.data.docs[index]['name']);
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => ChatRoom2(
-                                        chatRoomId: roomId,
-                                        userMap: userMap,
+                            child: Padding(
+                              padding: const EdgeInsets.all(2)
+                                  .copyWith(left: 10, right: 10),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "Experience: ${snapshot.data.docs[index]['experience']} yrs",
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        letterSpacing: 2.5,
                                       ),
                                     ),
-                                  );
-                                },
-                                icon: Icon(Icons.chat, color: Colors.black))
-                          ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "${snapshot.data.docs[index]['college']}",
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        letterSpacing: 2.5,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  // ListTile(
+                                  //   title: Text(
+                                  //     "Experience: ${snapshot.data.docs[index]['experience']} yrs",
+                                  //     style: TextStyle(
+                                  //       fontSize: 15.0,
+                                  //       letterSpacing: 2.5,
+                                  //       fontWeight: FontWeight.bold,
+                                  //     ),
+                                  //   ),
+                                  //   subtitle: Text(
+                                  //     "${snapshot.data.docs[index]['college']}",
+                                  //     style: TextStyle(
+                                  //       fontSize: 15.0,
+                                  //       letterSpacing: 2.5,
+                                  //       fontWeight: FontWeight.bold,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      );
-                    }
-                  })),
+                        Container(
+                          child: Text(
+                            "Status: ${snapshot.data.docs[index]['status']}",
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                letterSpacing: 2.5,
+                                color: Colors.white),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            getdata(index);
+                            String roomId = chatRoomId(
+                                _auth.currentUser.displayName,
+                                snapshot.data.docs[index]['name']);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ChatRoom2(
+                                  chatRoomId: roomId,
+                                  userMap: userMap,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0)
+                                  .copyWith(bottom: 0),
+                              child: Card( shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),color: Colors.indigo[300],
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "Chat Now",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        letterSpacing: 2.5,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.chat,
+                                      color: Colors.black,
+                                      size: 35,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }),
+          ),
         ),
         actions: <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: Text('OK'),
-          )
+          Padding(
+            padding: const EdgeInsets.all(1).copyWith(right: 30, top: 0),
+            child: RaisedButton(
+              child: Text(
+                'Cancel',
+                style: TextStyle(fontSize: 15),
+              ),
+              shape: StadiumBorder(),
+              color: Colors.indigo[400],
+              textColor: Colors.white,
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            ),
+          ),
         ],
       ),
     );
   }
+
 }

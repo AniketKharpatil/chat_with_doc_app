@@ -10,14 +10,13 @@ import 'package:flutter/material.dart';
 
 import '../onboarding screen/onboard_main.dart';
 
-
 class BottomNavBar extends StatefulWidget {
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   User user;
   bool isloggedin = false;
 
@@ -38,6 +37,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       // }
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -68,12 +68,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Colors.white,
           ),
           Icon(
-            Icons.chat_bubble,
+            Icons.support_agent_outlined,
             size: 30,
             color: Colors.white,
           ),
           Icon(
-            Icons.calendar_today,
+            Icons.chat_bubble_rounded,
             size: 30,
             color: Colors.white,
           ),

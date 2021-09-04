@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc_app/account_pages/login1.dart';
 import 'package:doc_app/Screens/dochome.dart';
+import 'package:doc_app/queryform.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:doc_app/services/animation.dart';
@@ -25,7 +26,10 @@ class _SignUpDocState extends State<SignUpDoc> {
       if (user != null) {
         print(user);
         _auth.currentUser.updateDisplayName(_name);
-        Navigator.pushReplacementNamed(context, "/");
+         Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage2()),
+        );
       }
     });
   }
@@ -54,7 +58,7 @@ class _SignUpDocState extends State<SignUpDoc> {
         });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage2()),
+          MaterialPageRoute(builder: (context) => FormFour()),
         );
         if (user != null) {
           await _auth.currentUser.updateDisplayName(_name);
