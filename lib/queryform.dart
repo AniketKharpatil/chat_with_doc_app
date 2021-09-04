@@ -81,7 +81,7 @@ class _FormFourState extends State<FormFour> with Validator {
   final Color inActiveColor = Colors.white;
 
   void updateData() async {
-    await db.collection('doctors_data').doc(user1.uid).set({
+    await db.collection('doctors_data').add({
       'name': name,
       'email': email,
       'uid': user1.uid,
@@ -91,7 +91,7 @@ class _FormFourState extends State<FormFour> with Validator {
       'experience': exp,
       'specialization': specialization,
       'certificate': cert?.path.toString()
-    }, SetOptions(merge: true));
+    });
   }
 
   void createData() async {
@@ -104,8 +104,8 @@ class _FormFourState extends State<FormFour> with Validator {
       FirebaseUplaodNewFile.uploadFile(filepath, cert);
 
       setState(() {});
-      
-      
+      updateData();
+
       FirebaseUplaodNewFile.uploadFile(filepath2, file);
       showstat();
 
@@ -149,10 +149,11 @@ class _FormFourState extends State<FormFour> with Validator {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-               Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage2()),
-        );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage2()),
+              );
+              Navigator.of(ctx).pop();
             },
             child: Text('OK'),
           )
@@ -304,7 +305,7 @@ class _FormFourState extends State<FormFour> with Validator {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(automaticallyImplyLeading: false,
         title: Text("Doctor Form"),
       ),
       body: Container(
@@ -342,14 +343,14 @@ class _FormFourState extends State<FormFour> with Validator {
                               file?.path == null
                                   ? GestureDetector(
                                       onTap: getFile,
-                                    child: Container(
+                                      child: Container(
                                         child: CircleAvatar(
                                           radius: 50.0,
                                           backgroundImage: AssetImage(
                                               "assets/images/profile.png"),
                                         ),
                                       ),
-                                  )
+                                    )
                                   : GestureDetector(
                                       onTap: getFile,
                                       child: CircleAvatar(

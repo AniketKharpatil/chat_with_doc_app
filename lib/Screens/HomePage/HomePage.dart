@@ -108,12 +108,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           slivers: [
             SliverAppBar(
               floating: true,
-              backgroundColor: Colors.white70,
+              backgroundColor: Color(0xff7266d8),
               title: Text(
                 'Welcome to Doc chat App',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
+                  color: Colors.white,
                 ),
               ),
               actions: [
@@ -171,8 +171,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             SliverPadding(
               padding: padding,
               sliver: SliverGrid.count(
-                  crossAxisSpacing: MediaQuery.of(context).size.height * 0.025,
-                  mainAxisSpacing: MediaQuery.of(context).size.height * 0.025,
+                  crossAxisSpacing: MediaQuery.of(context).size.height * 0.02,
+                  mainAxisSpacing: MediaQuery.of(context).size.height * 0.02,
                   crossAxisCount: 1,
                   children: [
                     StreamBuilder<QuerySnapshot>(
@@ -184,146 +184,148 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         if (!snapshot.hasData)
                           return Center(child: CircularProgressIndicator());
                         else {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        showDetails(
-                                            snapshot.data.docs[index]['name'],
-                                            index);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Container(
-                                          child: Card(
-                                            shadowColor: Colors.indigo,
-                                            elevation: 3,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(25.0),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                2, 5, 2, 0),
-                                                        child: CircleAvatar(
-                                                          radius: 36,
-                                                          backgroundImage:
-                                                              AssetImage(
-                                                                  'assets/images/background.png'),
-                                                        ),
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                            .all(
-                                                                        8.0)
-                                                                    .copyWith(
-                                                                        bottom:
-                                                                            2,
-                                                                        left:
-                                                                            10),
-                                                            child: Row(
-                                                              children: [
-                                                                Text(
-                                                                  snapshot.data
-                                                                              .docs[
-                                                                          index]
-                                                                      ['name'],
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    // color: kPrimaryColor,
-                                                                    fontSize:
-                                                                        20,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
+                          return Container(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.docs.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          showDetails(
+                                              snapshot.data.docs[index]['name'],
+                                              index);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Container(
+                                            child: Card(
+                                              shadowColor: Colors.indigo,
+                                              elevation: 3,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(25.0),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  2, 5, 2, 0),
+                                                          child: CircleAvatar(
+                                                            radius: 36,
+                                                            backgroundImage:
+                                                                AssetImage(
+                                                                    'assets/images/background.png'),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                            .all(
-                                                                        8.0)
-                                                                    .copyWith(
-                                                                        bottom:
-                                                                            2,
-                                                                        left:
-                                                                            20),
-                                                            child: Text(
-                                                              "${snapshot.data.docs[index]['specialization']}",
-                                                              style: TextStyle(
-                                                                  fontSize: 15
-                                                                  // color: kPrimaryColor,
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                              .all(
+                                                                          8.0)
+                                                                      .copyWith(
+                                                                          bottom:
+                                                                              2,
+                                                                          left:
+                                                                              10),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    snapshot.data
+                                                                                .docs[
+                                                                            index]
+                                                                        ['name'],
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      // color: kPrimaryColor,
+                                                                      fontSize:
+                                                                          20,
+                                                                    ),
                                                                   ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                              .all(
+                                                                          8.0)
+                                                                      .copyWith(
+                                                                          bottom:
+                                                                              2,
+                                                                          left:
+                                                                              20),
+                                                              child: Text(
+                                                                "${snapshot.data.docs[index]['specialization']}",
+                                                                style: TextStyle(
+                                                                    fontSize: 15
+                                                                    // color: kPrimaryColor,
+                                                                    ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      )),
-                                );
-                                //       Container(
-                                //         child: Card(
-                                //           child: Column(
-                                //             children: [
-                                //               CircleAvatar(
-                                //                 radius: 30,
-                                //                 backgroundImage: AssetImage(
-                                //                     'assets/images/background.png'),
-                                //               ),
-                                //               Padding(
-                                //                 padding:
-                                //                     const EdgeInsets.all(8.0),
-                                //                 child: Row(
-                                //                   children: [
-                                //                     Text(
-                                //                       snapshot.data.docs[index]
-                                //                           ['name'],
-                                //                       style: TextStyle(
-                                //                         fontWeight:
-                                //                             FontWeight.bold,
-                                //                         // color: kPrimaryColor,
-                                //                         fontSize: 20,
-                                //                       ),
-                                //                     ),
-                                //                   ],
-                                //                 ),
-                                //               ),
-                                //               Text(
-                                //                 "Therapist",
-                                //                 style: TextStyle(fontSize: 15
-                                //                     // color: kPrimaryColor,
-                                //                     ),
-                                //               )
-                                //             ],
-                                //           ),
-                                //         ),
-                                //       )),
-                                // );
-                              });
+                                        )),
+                                  );
+                                  //       Container(
+                                  //         child: Card(
+                                  //           child: Column(
+                                  //             children: [
+                                  //               CircleAvatar(
+                                  //                 radius: 30,
+                                  //                 backgroundImage: AssetImage(
+                                  //                     'assets/images/background.png'),
+                                  //               ),
+                                  //               Padding(
+                                  //                 padding:
+                                  //                     const EdgeInsets.all(8.0),
+                                  //                 child: Row(
+                                  //                   children: [
+                                  //                     Text(
+                                  //                       snapshot.data.docs[index]
+                                  //                           ['name'],
+                                  //                       style: TextStyle(
+                                  //                         fontWeight:
+                                  //                             FontWeight.bold,
+                                  //                         // color: kPrimaryColor,
+                                  //                         fontSize: 20,
+                                  //                       ),
+                                  //                     ),
+                                  //                   ],
+                                  //                 ),
+                                  //               ),
+                                  //               Text(
+                                  //                 "Therapist",
+                                  //                 style: TextStyle(fontSize: 15
+                                  //                     // color: kPrimaryColor,
+                                  //                     ),
+                                  //               )
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //       )),
+                                  // );
+                                }),
+                          );
                         }
                       },
                     ),

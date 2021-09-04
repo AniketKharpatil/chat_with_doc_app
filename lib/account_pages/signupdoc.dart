@@ -21,23 +21,23 @@ class _SignUpDocState extends State<SignUpDoc> {
 
   String _name, _email, _password, _role = 'doctor';
 
-  checkAuth() async {
-    _auth.authStateChanges().listen((user) {
-      if (user != null) {
-        print(user);
-        _auth.currentUser.updateDisplayName(_name);
-         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage2()),
-        );
-      }
-    });
-  }
+  // checkAuth() async {
+  //   _auth.authStateChanges().listen((user) {
+  //     if (user != null) {
+  //       print(user);
+  //       _auth.currentUser.updateDisplayName(_name);
+  //        Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => HomePage2()),
+  //       );
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    this.checkAuth();
+    // this.checkAuth();
   }
 
   signUpDoc() async {

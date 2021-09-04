@@ -68,12 +68,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Colors.white,
           ),
           Icon(
-            Icons.support_agent_outlined,
+            Icons.chat_bubble_rounded,
             size: 30,
             color: Colors.white,
           ),
           Icon(
-            Icons.chat_bubble_rounded,
+            Icons.calendar_today,
             size: 30,
             color: Colors.white,
           ),

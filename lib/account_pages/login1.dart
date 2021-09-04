@@ -20,18 +20,18 @@ class _LoginState extends State<Login> {
   String admin_email, admin_pass;
   String _name, _email, _password, _role = 'admin';
 
-  checkAuth() async {
-    _auth.authStateChanges().listen((user) {
-      print(user);
-      _auth.currentUser.updateDisplayName(_name);
-      if (user != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BottomNavBar()),
-        );
-      }
-    });
-  }
+  // checkAuth() async {
+  //   _auth.authStateChanges().listen((user) {
+  //     print(user);
+  //     _auth.currentUser.updateDisplayName(_name);
+  //     if (user != null) {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => BottomNavBar()),
+  //       );
+  //     }
+  //   });
+  // }
 
   login() async {
     if (_formKey.currentState.validate()) {
@@ -91,7 +91,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    this.checkAuth();
+    // this.checkAuth();
   }
 
   @override

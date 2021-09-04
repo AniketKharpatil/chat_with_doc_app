@@ -20,18 +20,18 @@ class _DocLoginState extends State<DocLogin> {
 
   String _name, _email, _password, _role = 'admin';
 
-  checkAuth() async {
-    _auth.authStateChanges().listen((user) {
-      print(user);
-      _auth.currentUser.updateDisplayName(_name);
-      if (user != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage2()),
-        );
-      }
-    });
-  }
+  // checkAuth() async {
+  //   _auth.authStateChanges().listen((user) {
+  //     print(user);
+  //     _auth.currentUser.updateDisplayName(_name);
+  //     if (user != null) {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => HomePage2()),
+  //       );
+  //     }
+  //   });
+  // }
 
   docLogin() async {
     if (_formKey.currentState.validate()) {
@@ -86,7 +86,7 @@ class _DocLoginState extends State<DocLogin> {
   @override
   void initState() {
     super.initState();
-    this.checkAuth();
+    // this.checkAuth();
   }
 
   @override

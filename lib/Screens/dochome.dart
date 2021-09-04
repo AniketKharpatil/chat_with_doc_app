@@ -54,7 +54,7 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
   }
 
   void setStatus(String status) async {
-    await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+    await _firestore.collection('doctors').doc(_auth.currentUser.uid).update({
       "status": status,
     });
   }
