@@ -110,7 +110,7 @@ class HomeController extends StatelessWidget {
             return OnBoardPage();
             // return Home();
           } else {
-            return BottomNavBar();
+            return LoginChoice();
           }
           // return user ? Home() : SignUpView();
         }

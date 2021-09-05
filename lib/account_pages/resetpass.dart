@@ -21,7 +21,7 @@ class _ResetScreenState extends State<ResetScreen> {
     final resetButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xffEB6383),
+      color: Color(0xff7266d8),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width * 0.55,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -69,12 +69,13 @@ class _ResetScreenState extends State<ResetScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                height: 400,
+                height: 250,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
-                      top: -40,
-                      height: 400,
+                      // top: -20,
+                      left: 90,
+                      height: 320,
                       width: width,
                       child: FadeAnimation(
                           1,
@@ -87,7 +88,8 @@ class _ResetScreenState extends State<ResetScreen> {
                           )),
                     ),
                     Positioned(
-                      height: 400,
+                      height: 250,
+                      left: -20,
                       width: width + 20,
                       child: FadeAnimation(
                           1.3,
@@ -150,7 +152,7 @@ class _ResetScreenState extends State<ResetScreen> {
                                           enabledBorder:
                                               const OutlineInputBorder(
                                             borderSide: const BorderSide(
-                                                color: Color(0xffEB6383),
+                                                color: Color(0xff7266d8),
                                                 width: 0.7),
                                           ),
                                           border: const OutlineInputBorder(),

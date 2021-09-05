@@ -81,7 +81,7 @@ class _FormFourState extends State<FormFour> with Validator {
   final Color inActiveColor = Colors.white;
 
   void updateData() async {
-    await db.collection('doctors_data').add({
+    await db.collection('doctors_data').doc(user1.uid).set({
       'name': name,
       'email': email,
       'uid': user1.uid,
@@ -94,6 +94,24 @@ class _FormFourState extends State<FormFour> with Validator {
     });
   }
 
+  showError() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('ERROR'),
+        content: Text("Please upload certificate and Profile Image"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
+
   void createData() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
@@ -101,13 +119,16 @@ class _FormFourState extends State<FormFour> with Validator {
       final filepath = cert?.path;
       final filepath2 = file?.path;
 
-      FirebaseUplaodNewFile.uploadFile(filepath, cert);
+      FirebaseUplaodNewFile.uploadFile("certif", cert);
 
       setState(() {});
       updateData();
 
-      FirebaseUplaodNewFile.uploadFile(filepath2, file);
-      showstat();
+      FirebaseUplaodNewFile.uploadFile("profile", file);
+      if (cert.path == null || file.path == null) {
+        showError();
+      } else
+        showstat();
 
       /////////////////////adding data to database "doctors"///////////////////////////////
       // DocumentReference ref = await db.collection('doctors_data').add({
@@ -305,7 +326,8 @@ class _FormFourState extends State<FormFour> with Validator {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Doctor Form"),
       ),
       body: Container(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doc_app/chatroom.dart';
+import 'package:doc_app/onboarding%20screen/newpage.dart';
 import 'package:doc_app/queryform.dart';
 import 'package:doc_app/services/userdatafordoc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,24 +20,39 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
   User user;
   bool isloggedin = false;
 
+  checkAuth() async {
+    _auth.authStateChanges().listen((user) {
+      print(user);
+      if (user == null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginChoice()),
+        );
+      }
+    });
+  }
+
   Future signOut() async {
     await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text('Logout'),
-        content: Text(
-            'You have been successfully logged out, now you will be redirected to HomePage2'),
+        content: Text('You have been successfully logged out'),
         actions: <Widget>[
           FlatButton(
             onPressed: () {
+              _auth.signOut();
               Navigator.of(ctx).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginChoice()),
+              );
             },
             child: Text('OK'),
           )
         ],
       ),
     );
-    return await _auth.signOut();
   }
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -49,11 +65,18 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    this.checkAuth();
     WidgetsBinding.instance.addObserver(this);
     setStatus("Online");
   }
 
   void setStatus(String status) async {
+    await _firestore
+        .collection('doctors_data')
+        .doc(_auth.currentUser.uid)
+        .update({
+      "status": status,
+    });
     await _firestore.collection('doctors').doc(_auth.currentUser.uid).update({
       "status": status,
     });
@@ -110,6 +133,13 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        title: Text(
+          "Meet your Patients",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Color(0xff7266d8),
@@ -187,8 +217,7 @@ class _HomePage2State extends State<HomePage2> with WidgetsBindingObserver {
               ),
               TextButton(
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pop(context);
+                  signOut();
                 },
                 child: ListTile(
                   title: Text(
