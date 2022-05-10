@@ -2,6 +2,7 @@
 
 A new Flutter project.
 
+Vimeo demo: https://vimeo.com/597918248?embedded=true&source=vimeo_logo&owner=110724588
 ## Getting Started
 
 This project is a starting point for a Flutter application.
